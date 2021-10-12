@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <conio.h>
 #include <time.h>
 
 int main()
@@ -6,9 +7,11 @@ int main()
     int max = 100000;
     int prime_numbers = 0;
     double time_spent = 0.0;
- 
+    
     printf("starting... ");
     clock_t begin = clock();
+
+    int y = 0;
 
     for (int x = 0; x != max + 1; x++)
     {
@@ -26,6 +29,15 @@ int main()
             {
                 prime_numbers ++; 
             }
+        }
+
+        y++;
+
+        if (y == 100000) {
+            printf("\e[1;1H\e[2J");
+            printf("starting... ");
+            printf("%.2f\n", ((float)x) / (float)max * 100);
+            y = 0;
         }
     }
 
