@@ -1,43 +1,34 @@
 #include <stdio.h>
-#include <conio.h>
 #include <time.h>
 
 int main()
 {
-    int max = 100000;
+    int max = 10;
     int prime_numbers = 0;
     double time_spent = 0.0;
+    int prime = 1, x, i;
     
-    printf("starting... ");
+    printf("starting... \n");
     clock_t begin = clock();
 
-    int y = 0;
-
-    for (int x = 0; x != max + 1; x++)
-    {
-        if (x > 1)
+    for (x = 2; x <= max; x++)
+    {   
+        if (x % 2 != 0 || x % 5 != 0 || x % 3 != 0)
         {
-            int prime = 1;
-            for (int i = 2; i != x; i++)
+            for (i = 2; i <= x / 2; i++)
             {   
-                if ((x % i) == 0) 
-                { 
-                    prime = 0; break; 
+                if (x % i == 0)
+                {
+                    prime = 0;
+                    break;
                 }
             }
             if (prime == 1) 
             {
+                printf("%i\n", x);
                 prime_numbers ++; 
             }
-        }
-
-        y++;
-
-        if (y == 100000) {
-            printf("\e[1;1H\e[2J");
-            printf("starting... ");
-            printf("%.2f\n", ((float)x) / (float)max * 100);
-            y = 0;
+            prime = 1;
         }
     }
 
