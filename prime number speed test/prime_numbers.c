@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <time.h>
 
-int main()
+void main()
 {
-    int max = 10;
+    int max = 100000;
     int prime_numbers = 0;
     double time_spent = 0.0;
     int prime = 1, x, i;
@@ -25,7 +25,6 @@ int main()
             }
             if (prime == 1) 
             {
-                printf("%i\n", x);
                 prime_numbers ++; 
             }
             prime = 1;
@@ -35,5 +34,4 @@ int main()
     clock_t end = clock();
     time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
     printf("It took %.3f seconds. Found %i prime numbers", time_spent, prime_numbers);
-    return 0;
 }
