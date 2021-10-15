@@ -1,7 +1,8 @@
 #include <iostream>
 #include <time.h>
 
-int main() {
+int main() 
+{
     int max = 100000;
     int prime_numbers = 0;
     double time_spent = 0.0;
