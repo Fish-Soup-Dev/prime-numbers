@@ -1,14 +1,13 @@
-#include <stdio.h>
+#include <iostream>
 #include <time.h>
 
-int main()
-{
+int main() {
     int max = 100000;
     int prime_numbers = 0;
     double time_spent = 0.0;
     int prime = 1, x, i;
     
-    printf("starting... \n");
+    std::cout << "starting... \n";
     clock_t begin = clock();
 
     for (x = 2; x <= max; x++)
@@ -33,6 +32,6 @@ int main()
 
     clock_t end = clock();
     time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
-    printf("It took %.3f seconds. Found %i prime numbers", time_spent, prime_numbers);
+    std::cout << "It took " << time_spent << " seconds. Found " << prime_numbers << " prime numbers";
     return 0;
 }
