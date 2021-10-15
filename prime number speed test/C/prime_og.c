@@ -13,7 +13,7 @@ int main()
 
     for (x = 2; x <= max; x++)
     {   
-        if (x % 2 != 0 || x % 5 != 0 || x % 3 != 0)
+        if (x % 2 != 0)
         {
             for (i = 2; i <= x / 2; i++)
             {   
