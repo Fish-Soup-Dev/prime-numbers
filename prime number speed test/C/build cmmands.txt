@@ -1,0 +1,1 @@
+cd "c:\Users\andre\Documents\Repos\thing-1\prime number speed test\C\" ; if ($?) { gcc -IC:/MinGW/include/ prime_numbers.c -o prime_numbers -lpthread } ; if ($?) { .\prime_numbers }
