@@ -12,27 +12,23 @@ void* find_prime(void *arg) {
     int prime = 1;
     int total = 0;
 
-    for (int x = 1; x <= 49999; x++) {
+    for (int x = 1; x <= 25000; x++) {
 
-        if (val_p[x] % 2 != 0) {
+        for (int i = 2; i <= val_p[x] / 2; i++) {
 
-            for (int i = 2; i <= val_p[x] / 2; i++) {
-
-                if (val_p[x] % i == 0) {
-                    
-                    prime = 0;
-                    break;
-                }
+            if (val_p[x] % i == 0) {
+                
+                prime = 0;
+                break;
             }
-
-            if (prime == 1) {
-
-                total++;
-            }
-
-            prime = 1;
-
         }
+
+        if (prime == 1) {
+
+            total++;
+        }
+
+        prime = 1;
     }
 
     *result = total;
@@ -50,62 +46,48 @@ int main(int argc, char* argv[]) {
     pthread_t th[max];
     int* res;
 
-    int numsA[max / 2];
-    int numsB[max / 2];
+    int nums[50000];
+    int numsA[25000];
+    int numsB[25000];
 
     int s = 0;
-    int h = 1, hh = 0;
-    int g = 0, gg = 0;
+    int i = 0;
+    int j;
+    int x;
 
     printf("starting... \n");
     clock_t begin = clock();
 
-    // TODO finsh the array asiment.
     for (int x = 1; x <= max; x++) {
 
-        if (h == 1){
-            numsA[s] = x;
-            h = 0;
-            g = 1;
-            hh = 1;
-        }
-        if (g == 1){
-            numsB[s] = x;
-            g = 0;
-            h = 1;
-            gg = 1;
+        if (x % 2 != 0) {
+
+            nums[s] = x;
+            s++;
+
         }
 
-        if ( gg == 1 && hh == 1) {
-            s += 1;
-            hh = 0;
-            gg = 0;
-        }
+    }
+
+    for(j = 0; j < 50000 ;j += 2) {
+
+        numsA[i]=nums[j];
+        numsB[i]=nums[j+1];
+
+        i++;
+
     }
 
     // * create thread with number that we are testing if it is prime.
-    if ( pthread_create(&th[1], NULL, &find_prime, numsA) != 0) {
-        printf("create thread failed\n");
-
-    }
-    if ( pthread_create(&th[2], NULL, &find_prime, numsB) != 0) {
-        printf("create thread failed\n");
-
-    }
+    pthread_create(&th[1], NULL, &find_prime, numsA);
+    
+    pthread_create(&th[2], NULL, &find_prime, numsB);
     
     // * add all threads awnsers togeather.
-    if ( pthread_join(th[1], (void**) &res) != 0) {
-        printf("join thread failed\n");
-    }
-
-    // add result to total primes found.
+    pthread_join(th[1], (void**) &res);
     prime_numbers += *res;
 
-    if ( pthread_join(th[2], (void**) &res) != 0) {
-        printf("join thread failed\n");
-    }
-
-    // add result to total primes found.
+    pthread_join(th[2], (void**) &res);
     prime_numbers += *res;
 
     // free data.
