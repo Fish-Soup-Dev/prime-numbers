@@ -12,7 +12,7 @@ void* find_prime(void *arg) {
     int prime = 1;
     int total = 0;
 
-    for (int x = 1; x <= 25000; x++) {
+    for (int x = 0; x <= 12500; x++) {
 
         for (int i = 2; i <= val_p[x] / 2; i++) {
 
@@ -46,8 +46,10 @@ int main(int argc, char* argv[]) {
     int* res;
 
     int nums[50000];
-    int numsA[25000];
-    int numsB[25000];
+    int numsA[12500];
+    int numsB[12500];
+    int numsC[12500];
+    int numsD[12500];
 
     int s = 0;
     int i = 0;
@@ -68,10 +70,12 @@ int main(int argc, char* argv[]) {
 
     }
 
-    for(j = 0; j < 50000 ;j += 2) {
+    for(j = 0; j < 50000 ;j += 4) {
 
         numsA[i]=nums[j];
         numsB[i]=nums[j+1];
+        numsC[i]=nums[j+2];
+        numsD[i]=nums[j+3];
 
         i++;
 
@@ -81,12 +85,22 @@ int main(int argc, char* argv[]) {
     pthread_create(&th[1], NULL, &find_prime, numsA);
     
     pthread_create(&th[2], NULL, &find_prime, numsB);
+
+    pthread_create(&th[3], NULL, &find_prime, numsA);
+    
+    pthread_create(&th[4], NULL, &find_prime, numsB);
     
     // * add all threads awnsers togeather.
     pthread_join(th[1], (void**) &res);
     prime_numbers += *res;
 
     pthread_join(th[2], (void**) &res);
+    prime_numbers += *res;
+
+    pthread_join(th[3], (void**) &res);
+    prime_numbers += *res;
+
+    pthread_join(th[4], (void**) &res);
     prime_numbers += *res;
 
     // free data.
