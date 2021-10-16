@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     int prime_numbers = 0;
     double time_spent = 0.0;
 
-    pthread_t th[max];
+    pthread_t th[4];
     int* res;
 
     int nums[50000];
