@@ -32,7 +32,6 @@ void* find_prime(void *arg) {
     }
 
     *result = total;
-
     return (void*) result;
 }
 
