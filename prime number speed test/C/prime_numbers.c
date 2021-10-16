@@ -12,7 +12,7 @@ void* find_prime(void *arg) {
     int prime = 1;
     int total = 0;
 
-    for (int x = 0; x <= 12500; x++) {
+    for (int x = 1; x <= 12500; x++) {
 
         for (int i = 2; i <= val_p[x] / 2; i++) {
 
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
     printf("starting... \n");
     clock_t begin = clock();
 
-    for (int x = 1; x <= max; x++) {
+    for (x = 1; x <= max; x++) {
 
         if (x % 2 != 0) {
 
@@ -72,10 +72,10 @@ int main(int argc, char* argv[]) {
 
     for(j = 0; j < 50000 ;j += 4) {
 
-        numsA[i]=nums[j];
-        numsB[i]=nums[j+1];
-        numsC[i]=nums[j+2];
-        numsD[i]=nums[j+3];
+        numsA[i] = nums[j + 0];
+        numsB[i] = nums[j + 1];
+        numsC[i] = nums[j + 2];
+        numsD[i] = nums[j + 3];
 
         i++;
 
@@ -86,9 +86,9 @@ int main(int argc, char* argv[]) {
     
     pthread_create(&th[2], NULL, &find_prime, numsB);
 
-    pthread_create(&th[3], NULL, &find_prime, numsA);
+    pthread_create(&th[3], NULL, &find_prime, numsC);
     
-    pthread_create(&th[4], NULL, &find_prime, numsB);
+    pthread_create(&th[4], NULL, &find_prime, numsD);
     
     // * add all threads awnsers togeather.
     pthread_join(th[1], (void**) &res);
