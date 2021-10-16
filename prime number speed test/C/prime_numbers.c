@@ -4,6 +4,8 @@
 #include <pthread.h>
 #include <unistd.h>
 
+int max = 100000;
+
 // * retunrns number of primes found
 void* find_prime(void *arg) {
 
@@ -12,7 +14,9 @@ void* find_prime(void *arg) {
     int prime = 1;
     int total = 0;
 
-    for (int x = 1; x <= 12500; x++) {
+    int smol_num = (max / 2) / 4;
+
+    for (int x = 1; x <= smol_num; x++) {
 
         for (int i = 2; i <= val_p[x] / 2; i++) {
 
@@ -38,18 +42,19 @@ void* find_prime(void *arg) {
 // * Main loop
 int main(int argc, char* argv[]) {
 
-    int max = 100000;
     int prime_numbers = 0;
     double time_spent = 0.0;
 
     pthread_t th[4];
     int* res;
 
-    int nums[50000];
-    int numsA[12500];
-    int numsB[12500];
-    int numsC[12500];
-    int numsD[12500];
+    int smol_num = (max / 2) / 4;
+
+    int nums[max / 2];
+    int numsA[smol_num];
+    int numsB[smol_num];
+    int numsC[smol_num];
+    int numsD[smol_num];
 
     int s = 0;
     int i = 0;
@@ -70,7 +75,7 @@ int main(int argc, char* argv[]) {
 
     }
 
-    for(j = 0; j < 50000 ;j += 4) {
+    for(j = 0; j < (max / 2); j += 4) {
 
         numsA[i] = nums[j + 0];
         numsB[i] = nums[j + 1];
@@ -103,7 +108,6 @@ int main(int argc, char* argv[]) {
     pthread_join(th[4], (void**) &res);
     prime_numbers += *res;
 
-    // free data.
     free(res);
 
     clock_t end = clock();
