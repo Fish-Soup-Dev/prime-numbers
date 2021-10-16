@@ -11,7 +11,7 @@ int main()
     printf("starting... \n");
     clock_t begin = clock();
 
-    for (x = 2; x <= max; x++)
+    for (x = 1; x <= max; x++)
     {   
         if (x % 2 != 0)
         {
