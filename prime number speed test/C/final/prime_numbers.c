@@ -61,11 +61,9 @@ int main(int argc, char* argv[]) {
     clock_t begin = clock();
 
     // * remove all even numbers then devide all numbers in to 4 arrys.
-    for (x; x <= max; x++) {
-        if (x % 2 != 0) { 
-            nums[s] = x; 
-            s++; 
-        } 
+    for (x; x <= max; x += 2) {
+        nums[s] = x; 
+        s++; 
     }
     for (j; j < (max / 2); j += 4) { 
         numsA[i] = nums[j + 0]; 
