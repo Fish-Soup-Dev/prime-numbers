@@ -5,14 +5,24 @@
 #include <unistd.h>
 
 //  starting amout of numbers to serch through.
-int max = 100000;
+const int max = 100000;
+
+// output from threads
+struct thread_result
+{
+    int x;
+    clock_t s;
+    clock_t e;
+};
 
 // * retunrns number of primes found
 void* find_prime(void *arg) {
 
+    clock_t start = clock();
+
     // * weird magic.
     int *val_p = (int *) arg;
-    int* result = malloc(sizeof(int));
+    struct thread_result *res = malloc(sizeof *res);
     int prime = 1, total = 0;
     int smol_num = (max / 2) / 4;
 
@@ -35,9 +45,13 @@ void* find_prime(void *arg) {
         prime = 1;
     }
 
-    // * more weird magic.
-    *result = total;
-    return (void*) result;
+    clock_t end = clock();
+
+    // * put res into out struct.
+    res -> x = total;
+    res -> s = start;
+    res -> e = end;
+    return res;
 }
 
 // * Main loop
@@ -45,9 +59,9 @@ int main(int argc, char* argv[]) {
 
     // * define all starting variables.
     int prime_numbers = 0;
-    double time_spent = 0.0;
     pthread_t th[4];
-    int* res;
+    void *out_void;
+    struct thread_result *out;
     int smol_num = (max / 2) / 4;
     int nums[max / 2];
     int numsA[smol_num];
@@ -57,7 +71,7 @@ int main(int argc, char* argv[]) {
     int s = 0, i = 0, j = 0, x = 1;
 
     // * start clock.
-    printf("starting... \n");
+    printf("\033[0;33mstarting... \n");
     clock_t begin = clock();
 
     // * remove all even numbers then devide all numbers in to 4 arrys.
@@ -74,25 +88,49 @@ int main(int argc, char* argv[]) {
     }
 
     // * create thread with number that we are testing if it is prime.
-    pthread_create(&th[1], NULL, &find_prime, numsA);
-    pthread_create(&th[2], NULL, &find_prime, numsB);
-    pthread_create(&th[3], NULL, &find_prime, numsC);
-    pthread_create(&th[4], NULL, &find_prime, numsD);
+    pthread_create(&th[1], NULL, &find_prime, &numsA);
+    pthread_create(&th[2], NULL, &find_prime, &numsB);
+    pthread_create(&th[3], NULL, &find_prime, &numsC);
+    pthread_create(&th[4], NULL, &find_prime, &numsD);
     
     // * add all threads awnsers togeather.
-    pthread_join(th[1], (void**) &res);
-    prime_numbers += *res;
-    pthread_join(th[2], (void**) &res);
-    prime_numbers += *res;
-    pthread_join(th[3], (void**) &res);
-    prime_numbers += *res;
-    pthread_join(th[4], (void**) &res);
-    prime_numbers += *res;
+    pthread_join(th[1], &out_void);
+
+    out = out_void;
+    prime_numbers += out -> x;
+    int thread_time1 = (out -> e - out ->s);
+
+    pthread_join(th[2], &out_void);
+    out = out_void;
+    prime_numbers += out -> x;
+    int thread_time2 = (out -> e - out ->s);
+
+    pthread_join(th[3], &out_void);
+    out = out_void;
+    prime_numbers += out -> x;
+    int thread_time3 = (out -> e - out ->s);
+
+    pthread_join(th[4], &out_void);
+    out = out_void;
+    prime_numbers += out -> x;
+    int thread_time4 = (out -> e - out ->s);
 
     // * end clock and print results.
     clock_t end = clock();
-    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
-    printf("It took %.3f seconds. Found %i prime numbers", time_spent, prime_numbers);
+
+    double time_t1 = (double)(thread_time1) / CLOCKS_PER_SEC;
+    double time_t2 = (double)(thread_time2) / CLOCKS_PER_SEC;
+    double time_t3 = (double)(thread_time3) / CLOCKS_PER_SEC;
+    double time_t4 = (double)(thread_time4) / CLOCKS_PER_SEC;
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    
+    printf("\033[0;33mThread 1 compleated in %.3f seconds.\033[0;0m\n", time_t1);
+    printf("\033[0;33mThread 2 compleated in %.3f seconds.\033[0;0m\n", time_t2);
+    printf("\033[0;33mThread 3 compleated in %.3f seconds.\033[0;0m\n", time_t3);
+    printf("\033[0;33mThread 4 compleated in %.3f seconds.\033[0;0m\n", time_t4);
+
+    printf("\033[0;94mIt took \033[0;31m%.3f\033[0;94m seconds.\nFound \033[0;32m%i\033[0;94m prime numbers\033[0m",
+        time_spent, prime_numbers);
     
     return 0;
 }
