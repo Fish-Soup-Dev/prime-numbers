@@ -11,8 +11,7 @@ const int max = 100000;
 struct thread_result
 {
     int x;
-    clock_t s;
-    clock_t e;
+    double t;
 };
 
 // * retunrns number of primes found
@@ -49,8 +48,7 @@ void* find_prime(void *arg) {
 
     // * put res into out struct.
     res -> x = total;
-    res -> s = start;
-    res -> e = end;
+    res -> t = (double)(end - start) / CLOCKS_PER_SEC;
     return res;
 }
 
@@ -98,37 +96,31 @@ int main(int argc, char* argv[]) {
 
     out = out_void;
     prime_numbers += out -> x;
-    int thread_time1 = (out -> e - out ->s);
+    double thread_time1 = out -> t;
 
     pthread_join(th[2], &out_void);
     out = out_void;
     prime_numbers += out -> x;
-    int thread_time2 = (out -> e - out ->s);
+    double thread_time2 = out -> t;
 
     pthread_join(th[3], &out_void);
     out = out_void;
     prime_numbers += out -> x;
-    int thread_time3 = (out -> e - out ->s);
+    double thread_time3 = out -> t;
 
     pthread_join(th[4], &out_void);
     out = out_void;
     prime_numbers += out -> x;
-    int thread_time4 = (out -> e - out ->s);
+    double thread_time4 = out -> t;
 
     // * end clock and print results.
     clock_t end = clock();
-
-    double time_t1 = (double)(thread_time1) / CLOCKS_PER_SEC;
-    double time_t2 = (double)(thread_time2) / CLOCKS_PER_SEC;
-    double time_t3 = (double)(thread_time3) / CLOCKS_PER_SEC;
-    double time_t4 = (double)(thread_time4) / CLOCKS_PER_SEC;
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
     
-    printf("\033[0;33mThread 1 compleated in %.3f seconds.\033[0;0m\n", time_t1);
-    printf("\033[0;33mThread 2 compleated in %.3f seconds.\033[0;0m\n", time_t2);
-    printf("\033[0;33mThread 3 compleated in %.3f seconds.\033[0;0m\n", time_t3);
-    printf("\033[0;33mThread 4 compleated in %.3f seconds.\033[0;0m\n", time_t4);
-
+    printf("\033[0;33mThread 1 compleated in %.3f seconds.\033[0;0m\n", thread_time1);
+    printf("\033[0;33mThread 2 compleated in %.3f seconds.\033[0;0m\n", thread_time2);
+    printf("\033[0;33mThread 3 compleated in %.3f seconds.\033[0;0m\n", thread_time3);
+    printf("\033[0;33mThread 4 compleated in %.3f seconds.\033[0;0m\n", thread_time4);
     printf("\033[0;94mIt took \033[0;31m%.3f\033[0;94m seconds.\nFound \033[0;32m%i\033[0;94m prime numbers\033[0m",
         time_spent, prime_numbers);
     
