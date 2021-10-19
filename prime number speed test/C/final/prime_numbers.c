@@ -22,7 +22,8 @@ void* find_prime(void *arg) {
     // * weird magic.
     int *val_p = (int *) arg;
     struct thread_result *res = malloc(sizeof *res);
-    int prime = 1, total = 0;
+    int prime = 1;
+    register int total = 0;
     int smol_num = (max / 2) / 4;
 
     // * regular prime number finder code.
@@ -66,7 +67,9 @@ int main(int argc, char* argv[]) {
     int numsB[smol_num];
     int numsC[smol_num];
     int numsD[smol_num];
-    int s = 0, i = 0, j = 0, x = 1;
+    register int s = 0;
+    register int i = 0;
+    int j = 0, x = 1;
 
     // * start clock.
     printf("\033[0;33mstarting... \n");
